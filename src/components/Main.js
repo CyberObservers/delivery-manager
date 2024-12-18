@@ -1,6 +1,9 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import routesConfig, { defaultRoutePath } from "./routesConfig";
+import routesConfig, {
+  defaultRoutePath,
+  notfoundRoutePath,
+} from "./routesConfig";
 
 function Main(props) {
   const { isLoggedIn, handleLoggedIn } = props;
@@ -24,6 +27,7 @@ function Main(props) {
           );
         })}
         <Route path="/" element={<Navigate to={defaultRoutePath} />} />
+        <Route path="*" element={<Navigate to={notfoundRoutePath} />} />
       </Routes>
     </div>
   );

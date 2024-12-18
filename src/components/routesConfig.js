@@ -39,7 +39,7 @@ const routesConfig = [
     isProtected: false,
   },
   {
-    path: "*",
+    path: "/notfound",
     component: NotFound,
     isProtected: false,
   },
@@ -47,3 +47,4 @@ const routesConfig = [
 
 export default routesConfig;
 export const defaultRoutePath = "/home";
+export const notfoundRoutePath = "/notfound";
