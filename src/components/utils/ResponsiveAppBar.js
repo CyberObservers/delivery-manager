@@ -123,7 +123,7 @@ function ResponsiveAppBar(props) {
                   flexGrow: 1,
                   display: { xs: "none", md: "flex" },
                   paddingRight: 3,
-                  flexDirection: "row-reverse",
+                  justifyContent: "flex-end",
                 }}
               >
                 {pages.map((page) => (
