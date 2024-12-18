@@ -58,7 +58,7 @@ function ResponsiveAppBar(props) {
             component="a"
             href="/"
             sx={{
-              flexGrow: 1,
+              flexGrow: 0,
               mr: 2,
               display: { xs: isLoggedIn ? "none" : "flex", md: "flex" },
               fontFamily: "monospace",
@@ -120,9 +120,10 @@ function ResponsiveAppBar(props) {
               {/* navigation in desktop view */}
               <Box
                 sx={{
-                  flexGrow: 0,
+                  flexGrow: 1,
                   display: { xs: "none", md: "flex" },
                   paddingRight: 3,
+                  flexDirection: "row-reverse",
                 }}
               >
                 {pages.map((page) => (
