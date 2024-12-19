@@ -1,0 +1,29 @@
+.order-steps {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.order-main-page {
+    display: flex;
+    height: 100%; 
+    justify-content: center;
+    flex-direction: column;
+}
+
+.order-main-page h1 {
+    margin: auto;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2cm;
+}
+
+.contentStyle {
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20cm;
+    border: 1px solid #e9e9e9;
+  };

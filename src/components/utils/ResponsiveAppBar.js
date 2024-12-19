@@ -15,7 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import routesConfig from "../routesConfig";
 
 const pages = routesConfig
-  .filter((route) => route.isProtected)
+  .filter((route) => route.showOnBar)
   .map((route) => route.path.slice(1));
 
 function ResponsiveAppBar(props) {
@@ -47,7 +47,7 @@ function ResponsiveAppBar(props) {
         <Toolbar disableGutters>
           <AdbIcon
             sx={{
-              display: { xs: isLoggedIn ? "none" : "flex", md: "flex" },
+              display: "flex",
               mr: 1,
               color: "black",
             }}
