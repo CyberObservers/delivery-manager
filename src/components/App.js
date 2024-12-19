@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { Layout } from "antd";
 import Main from "./Main";
 import ResponsiveAppBar from "./utils/ResponsiveAppBar";
 import { TOKEN_KEY } from "../constants";
 import "../styles/App.css";
+
+const { Header, Footer, Content } = Layout;
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -23,8 +26,17 @@ function App() {
 
   return (
     <div className="App">
-      <ResponsiveAppBar isLoggedIn={isLoggedIn} handleLogout={logout} />
-      <Main isLoggedIn={isLoggedIn} handleLoggedIn={loggedIn} />
+      <Layout>
+        <Header style={{ padding: 0, backgroundColor: "white" }}>
+          <ResponsiveAppBar isLoggedIn={isLoggedIn} handleLogout={logout} />
+        </Header>
+        <Content>
+          <Main isLoggedIn={isLoggedIn} handleLoggedIn={loggedIn} />
+        </Content>
+        <Footer style={{ textAlign: "center", backgroundColor: "white" }}>
+          Delivery App Created by Delivery Team
+        </Footer>
+      </Layout>
     </div>
   );
 }

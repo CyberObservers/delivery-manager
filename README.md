@@ -10,6 +10,12 @@ This app is the frontend of flag camp team 02. It is based on React.js, using `M
 - Designed overall project structures.
 - Implemented Navigation bar.
 
+### 2024.12.19
+
+- Add background of home page and order main page
+- Update attributes in `routesConfig.js`.
+- Build overall navigation and components architecture of order subsystem.
+
 ## Quick Start
 
 First, direct to the root of this app and install dependencies.
