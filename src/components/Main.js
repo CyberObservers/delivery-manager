@@ -4,6 +4,7 @@ import routesConfig, {
   defaultRoutePath,
   notfoundRoutePath,
 } from "./routesConfig";
+import "../styles/Main.css";
 
 function Main(props) {
   const { isLoggedIn, handleLoggedIn } = props;
@@ -13,15 +14,18 @@ function Main(props) {
       <Routes>
         {routesConfig.map((route, index) => {
           const Component = route.component;
+          let routeClass = route.needsBackground ? "main-background" : "";
           return (
             <Route
               key={index}
               path={route.path}
               element={
-                <Component
-                  isLoggedIn={isLoggedIn}
-                  handleLoggedIn={handleLoggedIn}
-                />
+                <div className={routeClass}>
+                  <Component
+                    isLoggedIn={isLoggedIn}
+                    handleLoggedIn={handleLoggedIn}
+                  />
+                </div>
               }
             />
           );
