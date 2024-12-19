@@ -1,6 +1,6 @@
 # Delivery App Frontend
 
-This app is the frontend of flag camp team 02. It is based on React.js, using `Material UI` and `Ant Design`. Developers should update [What's new](#What's new) section `README.md` to indicate new features, bug fixes or other issues.
+This app is the frontend of flag camp team 02. It is based on React.js, using `Material UI` and `Ant Design`. Developers should update [What's new](#What's new) section `README.md` to indicate new features, bug fixes or other issues. [Here](https://github.com/defene/Delivery-management-app) is the repo of our backend.
 
 ## What's new
 
