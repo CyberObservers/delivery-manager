@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="App">
       <Layout>
-        <Header style={{ padding: 0, backgroundColor: "white" }}>
+        <Header style={{ padding: 0, backgroundColor: "inherit" }}>
           <ResponsiveAppBar isLoggedIn={isLoggedIn} handleLogout={logout} />
         </Header>
         <Content>
