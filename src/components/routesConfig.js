@@ -24,7 +24,7 @@ const routesConfig = [
   },
   {
     path: "/profile",
-    component: withAuth(Profile, "/login"),
+    component: Profile,
     showOnBar: true,
     needsBackground: false,
   },
