@@ -227,11 +227,9 @@ const MakeOrder = () => {
           )}
         </div>
       </Stack>
-
       <div
         style={{
-          marginTop: 24,
-          paddingBottom: 24,
+          marginBottom: 24,
         }}
       >
         {current > 0 && (
@@ -252,7 +250,13 @@ const MakeOrder = () => {
         {current === steps.length - 1 && (
           <Button
             type="primary"
-            onClick={() => message.success("Processing complete!")}
+            onClick={() => {
+              message.success("Processing complete!");
+              // sleep 3 seconds
+              setTimeout(() => {
+                navigate("/delivery/manage");
+              }, 3000);
+            }}
           >
             Done
           </Button>
