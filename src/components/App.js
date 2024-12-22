@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import Main from "./Main";
 import ResponsiveAppBar from "./utils/ResponsiveAppBar";
@@ -8,6 +8,18 @@ import "../styles/App.css";
 const { Header, Footer, Content } = Layout;
 
 function App() {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&language=en`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem(TOKEN_KEY) ? true : false
   );
