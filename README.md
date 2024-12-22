@@ -7,8 +7,7 @@ This app is the frontend of flag camp team 02. It is based on React.js, using `M
 ### 2024.12.21
 
 - Update delivery routes page. 
-- Add Mode selection buttons and a map with route on it using Google Map API.
-- Add Alex's google map API key to index.html.
+- Add mode selection buttons and a map with a route using Google Map API.
 
 ### 2024.12.19
 
