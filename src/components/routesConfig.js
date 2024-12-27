@@ -54,13 +54,13 @@ const routesConfig = [
   },
   {
     path: "/delivery/order",
-    component: MakeOrder,
+    component: withAuth(MakeOrder, "/login"),
     showOnBar: false,
     needsBackground: false,
   },
   {
     path: "/delivery/manage",
-    component: ManageOrder,
+    component: withAuth(ManageOrder, "/login"),
     showOnBar: false,
     needsBackground: false,
   },
