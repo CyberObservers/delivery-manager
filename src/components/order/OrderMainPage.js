@@ -12,7 +12,7 @@ const OrderMainPage = (props) => {
     color: "white",
     fontSize: { xs: "1cm", md: "2cm", lg: "3cm" },
     fontWeight: "bold",
-    fontFamily: "Roboto",
+    fontFamily: "Roboto monospace",
   };
   const buttonStyle = {
     margin: "10px",
