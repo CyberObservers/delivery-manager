@@ -7,6 +7,9 @@ This app is the frontend of flag camp team 02. It is based on React.js, using `M
 ### 2024.12.28
 
 - Refactor the Google Maps API logic from MakeOrder.js and moved it into a separate GoogleMaps.js file under the utils folder.
+- Implement Manage order page.
+- Implement Home page of users.
+- Implement make order process.
 
 ### 2024.12.21
 
