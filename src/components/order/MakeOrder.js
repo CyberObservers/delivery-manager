@@ -13,6 +13,12 @@ import ConfirmOrder from "./ConfirmOrder";
 
 import { BASE_URL } from "../../constants";
 
+import ChooseRoute from "./ChooseRoute";
+import AddPackage from "./AddPackage";
+import ConfirmOrder from "./ConfirmOrder";
+
+import { BASE_URL } from "../../constants";
+
 const steps = [
   {
     title: "Delivery Requirement",
