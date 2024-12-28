@@ -5,13 +5,6 @@ import axios from "axios";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import "../../styles/Order.css";
-import { useNavigate } from "react-router-dom";
-
-import ChooseRoute from "./ChooseRoute";
-import AddPackage from "./AddPackage";
-import ConfirmOrder from "./ConfirmOrder";
-
-import { BASE_URL } from "../../constants";
 
 import ChooseRoute from "./ChooseRoute";
 import AddPackage from "./AddPackage";
@@ -42,7 +35,6 @@ const MakeOrder = () => {
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
   const [packages, setPackages] = useState([
-    // 待迁移至父组件
     {
       key: "1",
       weight: "1kg",
@@ -55,12 +47,9 @@ const MakeOrder = () => {
   const [transportMode, setTransportMode] = useState("Robot");
   const [routePreference, setRoutePreference] = useState("Fastest");
   const [info, setInfo] = useState("");
-
-  // const [srcText, setSrcText] = useState("600 Alexan Dr, Durham, NC 27703");
-  // const [dstText, setDstText] = useState("Duke University, Durham, NC 27708");
   const [contact, setContact] = useState([]);
-
   let Component = steps[current].component;
+
   const next = () => {
     if (current === 0) {
       // check if form is filled in, if not, show error message
@@ -142,7 +131,11 @@ const MakeOrder = () => {
         </div>
       </Stack>
       <div style={{ marginBottom: 24 }}>
-        {current > 0 && <Button onClick={prev}>Previous</Button>}
+        {current > 0 && (
+          <Button style={{ marginRight: 10 }} onClick={prev}>
+            Previous
+          </Button>
+        )}
         {current < steps.length - 1 && (
           <Button type="primary" onClick={next}>
             Next

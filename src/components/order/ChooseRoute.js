@@ -29,12 +29,6 @@ const ChooseRoute = (props) => {
   // const [origin, setOrigin] = useState(null);
   // const [destination, setDestination] = useState(null);
 
-  const calculateUAVTime = (distanceInMiles) => {
-    const speed = 31.07; // UAV speed in miles per hour
-    const totalMinutes = (distanceInMiles / speed) * 60; // Time in minutes
-    return `${Math.round(totalMinutes)} mins`; // Return as "X mins"
-  };
-
   useEffect(() => {
     const sender_id = form.getFieldValue("sender");
     const receiver_id = form.getFieldValue("receiver");

@@ -97,10 +97,12 @@ const ConfirmOrder = (props) => {
               <h3>Transportation Mode</h3>
               <p>{transportMode}</p>
             </Col>
-            <Col span={12}>
-              <h3>Route Preference</h3>
-              <p>{routePreference}</p>
-            </Col>
+            {transportMode === "Robot" && (
+              <Col span={12}>
+                <h3>Route Preference</h3>
+                <p>{routePreference}</p>
+              </Col>
+            )}
           </Row>
 
           <Table
