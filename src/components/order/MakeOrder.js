@@ -3,6 +3,7 @@ import { Button, message, Steps, Radio } from "antd";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import "../../styles/Order.css";
+import {useNavigate} from "react-router-dom"
 
 const steps = [
   {
@@ -27,6 +28,7 @@ const MakeOrder = () => {
   const [transportMode, setTransportMode] = useState("Robot");
   const [routePreference, setRoutePreference] = useState("Fastest");
   const [info, setInfo] = useState(""); // To store route info (distance and duration)
+  const navigate = useNavigate()
 
   const next = () => setCurrent(current + 1);
   const prev = () => setCurrent(current - 1);
