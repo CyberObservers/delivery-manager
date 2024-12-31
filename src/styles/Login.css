@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('../../public/Auth_BG.png') no-repeat center center;
+    /* background: url('../../public/Background.png') no-repeat center center; */
     background-size: cover;
     position: fixed; /* This ensures full window coverage */
     top: 0;
