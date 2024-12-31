@@ -24,7 +24,7 @@ function App() {
     localStorage.getItem(TOKEN_KEY) ? true : false
   );
 
-  const loggedIn = (token, role) => {
+  const loggedIn = (token) => {
     if (token) {
       localStorage.setItem(TOKEN_KEY, token);
       setIsLoggedIn(true);
