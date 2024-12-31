@@ -146,7 +146,10 @@ const MakeOrder = () => {
             type="primary"
             onClick={() => {
               message.success("Processing complete!");
+
               setTimeout(() => navigate("/delivery/manage"), 3000);
+
+              
             }}
           >
             Done
