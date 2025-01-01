@@ -4,6 +4,10 @@ This app is the frontend of flag camp team 02. It is based on React.js, using `M
 
 ## What's new
 
+### 2024.12.31
+
+- Create SharedMap logic to share the map between the ChooseRoute page and the ConfirmOrder page.
+
 ### 2024.12.28
 
 - Refactor the Google Maps API logic from MakeOrder.js and moved it into a separate GoogleMaps.js file under the utils folder.

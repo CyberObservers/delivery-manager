@@ -5,6 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@mui/icons-material/Home";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { blue } from "@mui/material/colors";
+import SharedMap from "../utils/SharedMap";
 
 const columns = [
   {
@@ -70,7 +71,6 @@ const ConfirmOrder = (props) => {
 
   const sender = contact.find((c) => c.address_id === senderId);
   const receiver = contact.find((c) => c.address_id === receiverId);
-
   return (
     <div style={{ margin: "20px" }}>
       <h1>Confirm Order</h1>
@@ -122,19 +122,16 @@ const ConfirmOrder = (props) => {
           />
         </Col>
         <Col span={12}>
-          <div style={{ flex: 0.7 }}>
-            <div
-              id="map"
-              style={{
-                width: "100%",
-                height: "600px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-              }}
-            ></div>
-            <div style={{ marginTop: "10px", fontSize: "16px" }}>{info}</div>
-          </div>
-        </Col>
+  <div style={{ flex: 0.6, height: "400px" }}>
+    <SharedMap
+      sender={sender}
+      receiver={receiver}
+      transportMode={transportMode}
+      routePreference={routePreference}
+    />
+    <div style={{ marginLeft: "10px", marginTop: "10px", fontSize: "16px" }}>{info}</div>
+  </div>
+</Col>
       </Row>
     </div>
   );

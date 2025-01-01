@@ -5,12 +5,7 @@ import React, { useEffect } from "react";
 //   DirectionsRenderer,
 // } from "@react-google-maps/api";
 import { Radio } from "antd";
-import {
-  geocodeAddress,
-  calculateUAVDistance,
-  createMapForUAV,
-  createMapForRobot,
-} from "../utils/GoogleMaps";
+import SharedMap from "../utils/SharedMap";
 
 const ChooseRoute = (props) => {
   const {
@@ -28,50 +23,7 @@ const ChooseRoute = (props) => {
   // const [directions, setDirections] = useState(null);
   // const [origin, setOrigin] = useState(null);
   // const [destination, setDestination] = useState(null);
-
-  useEffect(() => {
-    const sender_id = form.getFieldValue("sender");
-    const receiver_id = form.getFieldValue("receiver");
-    const originText = contact.find((c) => c.address_id === sender_id).address;
-    const destinationText = contact.find(
-      (c) => c.address_id === receiver_id
-    ).address;
-    if (current === 1) {
-      const geocoder = new window.google.maps.Geocoder();
-
-      Promise.all([
-        geocodeAddress(geocoder, originText),
-        geocodeAddress(geocoder, destinationText),
-      ])
-        .then(([origin, destination]) => {
-          if (transportMode === "UAV") {
-            createMapForUAV("map", origin, destination);
-            const distanceInMiles = calculateUAVDistance(origin, destination);
-            const time = `${Math.round((distanceInMiles / 31.07) * 60)} mins`; // UAV speed = 31.07 mph
-            setInfo(
-              `Distance: ${distanceInMiles.toFixed(
-                1
-              )} mi, Estimated Time: ${time}`
-            );
-          } else {
-            createMapForRobot("map", origin, destination, routePreference)
-              .then(({ distance, duration }) => {
-                setInfo(`Distance: ${distance}, Duration: ${duration}`);
-              })
-              .catch((error) => {
-                console.error(error);
-                setInfo(
-                  "Failed to calculate route. Please check the addresses."
-                );
-              });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          setInfo("Failed to geocode addresses.");
-        });
-    }
-  }, [current, transportMode, routePreference]);
+  
 
   return (
     <div style={{ flex: 0.7 }}>
@@ -117,15 +69,13 @@ const ChooseRoute = (props) => {
 
         {/* Map */}
         <div style={{ flex: 0.7 }}>
-          <div
-            id="map"
-            style={{
-              width: "100%",
-              height: "600px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-            }}
-          ></div>
+        <SharedMap
+    sender={contact.find((c) => c.address_id === form.getFieldValue("sender"))}
+    receiver={contact.find((c) => c.address_id === form.getFieldValue("receiver"))}
+    transportMode={transportMode}
+    routePreference={routePreference}
+    setInfo={setInfo}
+  />
           <div style={{ marginTop: "10px", fontSize: "16px" }}>{info}</div>
         </div>
         {/* <div style={{ flex: 0.7, height: "400px" }}>
