@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { } from "@ant-design/icons";
 import {
   UserOutlined,
@@ -17,6 +17,9 @@ import {
   Modal,
   Descriptions,
 } from "antd";
+import axios from "axios";
+
+import { BASE_URL } from "../../constants";
 
 // 绘制order右侧tag
 const getStatusTag = (status) => {
@@ -51,9 +54,15 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     gender: "Male",
     email: "123*****123@gmail.com",
-    firstName: "Ming",
-    lastName: "Ying",
+    user_first_name: "Ming",
+    user_last_name: "Ying",
     password: "********",
+  });
+
+  // 个人密码
+  const [password, setPassword] = useState({
+    oldPassword: "",
+    newPassword: "",
   });
 
   // 订单列表信息
@@ -66,7 +75,7 @@ const Profile = () => {
     description: "This is the description of this order",
     startDate: "123",
     endDate: "123",
-    status: "processing",
+    status: "success",
   }));
 
   // 单个订单详细信息
@@ -117,7 +126,7 @@ const Profile = () => {
   const handleConfirm = () => {
     setIsEditing(false);
     console.log("Updated Data:", formData);
-    // 提交新信息
+    // 向后端提交新信息
   };
 
   const [form] = Form.useForm();
@@ -140,6 +149,70 @@ const Profile = () => {
     setIsOrderModalOpen(false);
   };
 
+  // 获取后端个人信息
+  const FetchPersonalInfo = () => {
+    const opt = {
+      method: "GET",
+      url: `${BASE_URL}/profile/1`,
+      headers: {
+        // Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+    };
+
+    axios(opt)
+      .then((res) => {
+        if (res.status === 200) {
+          // 成功接受后端信息
+          console.log("response data:", res.data);
+          setFormData(res.data);
+          // console.log(formData.email);
+        }
+      })
+      .catch((err) => {
+        console.log("");
+        // message.error("Login failed!");
+      });
+  };
+
+  // 获取个人信息
+  useEffect(() => {
+    FetchPersonalInfo();
+  }, []);
+
+  // 同步表单数据
+  useEffect(() => {
+    if (form) {
+      form.setFieldsValue(formData);
+    }
+  }, [form, formData]);
+
+  // 修改密码对话框
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const showPasswordModal = () => {
+    setPasswordVisible(true);
+  };
+
+  const handlePasswordModalOk = () => {
+    // 调用修改密码接口
+    console.log(password);
+    
+    setPasswordVisible(false);
+  };
+
+  const handlePasswordModalCancel = () => {
+    setPasswordVisible(false);
+  };
+
+  // 处理密码字段的变化
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPassword((prevPassword) => ({
+      ...prevPassword,
+      [name]: value,
+    }));
+  };
+
   return (
     <div
       style={{
@@ -152,7 +225,7 @@ const Profile = () => {
       <div style={{ width: "40%", padding: "20px" }}>
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <Avatar size={64} icon={<UserOutlined />} />
-          <h2>YingMing</h2>
+          <h2>{formData.username}</h2>
           <p style={{ color: "#007bff" }}>This is my personal signature!</p>
         </div>
 
@@ -180,15 +253,56 @@ const Profile = () => {
           <Form.Item name="email" label="Email">
             <Input />
           </Form.Item>
-          <Form.Item name="firstName" label="First Name">
+          <Form.Item name="user_first_name" label="First Name">
             <Input />
           </Form.Item>
-          <Form.Item name="lastName" label="Last Name">
+          <Form.Item name="user_last_name" label="Last Name">
             <Input />
           </Form.Item>
           <Form.Item name="password" label="Password">
-            <Input />
+            <Input onClick={showPasswordModal} readOnly />
           </Form.Item>
+          <Modal
+            title="Change Password"
+            visible={passwordVisible}
+            onOk={handlePasswordModalOk}
+            onCancel={handlePasswordModalCancel}
+          >
+            <Form form={form} layout="vertical">
+              <Form.Item name="old_password" label="Old Password">
+                <Input.Password
+                  value={password.oldPassword}
+                  name="oldPassword"
+                  onChange={handlePasswordChange}
+                />
+              </Form.Item>
+              <Form.Item name="newPassword" label="New Password">
+                <Input.Password
+                  value={password.newPassword}
+                  name="newPassword"
+                  onChange={handlePasswordChange}
+                />
+              </Form.Item>
+              <Form.Item
+                name="confirmPassword"
+                label="Confirm Password"
+                rules={[
+                  ({ getFieldValue }) => ({
+                    validator(rule, value) {
+                      if (!value || getFieldValue("newPassword") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "The two password entries are inconsistent!"
+                      );
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+            </Form>
+          </Modal>
         </Form>
         <Flex wrap gap="large" justify="center">
           {/* 编辑按钮 */}
