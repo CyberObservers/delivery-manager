@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 // import {
 //   LoadScript,
 //   GoogleMap,
@@ -9,7 +9,6 @@ import SharedMap from "../utils/SharedMap";
 
 const ChooseRoute = (props) => {
   const {
-    current,
     form,
     transportMode,
     setTransportMode,
@@ -23,7 +22,6 @@ const ChooseRoute = (props) => {
   // const [directions, setDirections] = useState(null);
   // const [origin, setOrigin] = useState(null);
   // const [destination, setDestination] = useState(null);
-  
 
   return (
     <div style={{ flex: 0.7 }}>
@@ -69,13 +67,17 @@ const ChooseRoute = (props) => {
 
         {/* Map */}
         <div style={{ flex: 0.7 }}>
-        <SharedMap
-    sender={contact.find((c) => c.address_id === form.getFieldValue("sender"))}
-    receiver={contact.find((c) => c.address_id === form.getFieldValue("receiver"))}
-    transportMode={transportMode}
-    routePreference={routePreference}
-    setInfo={setInfo}
-  />
+          <SharedMap
+            sender={contact.find(
+              (c) => c.address_id === form.getFieldValue("sender")
+            )}
+            receiver={contact.find(
+              (c) => c.address_id === form.getFieldValue("receiver")
+            )}
+            transportMode={transportMode}
+            routePreference={routePreference}
+            setInfo={setInfo}
+          />
           <div style={{ marginTop: "10px", fontSize: "16px" }}>{info}</div>
         </div>
         {/* <div style={{ flex: 0.7, height: "400px" }}>

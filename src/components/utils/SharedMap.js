@@ -1,7 +1,18 @@
 import React, { useEffect } from "react";
-import { geocodeAddress, createMapForUAV, calculateUAVDistance, createMapForRobot } from "../utils/GoogleMaps";
+import {
+  geocodeAddress,
+  createMapForUAV,
+  calculateUAVDistance,
+  createMapForRobot,
+} from "../utils/GoogleMaps";
 
-const SharedMap = ({ sender, receiver, transportMode, routePreference, setInfo }) => {
+const SharedMap = ({
+  sender,
+  receiver,
+  transportMode,
+  routePreference,
+  setInfo,
+}) => {
   useEffect(() => {
     if (sender && receiver) {
       const geocoder = new window.google.maps.Geocoder();
@@ -15,7 +26,11 @@ const SharedMap = ({ sender, receiver, transportMode, routePreference, setInfo }
             createMapForUAV("map", origin, destination);
             const distanceInMiles = calculateUAVDistance(origin, destination);
             const time = `${Math.round((distanceInMiles / 31.07) * 60)} mins`; // UAV speed = 31.07 mph
-            setInfo?.(`Distance: ${distanceInMiles.toFixed(1)} mi, Estimated Time: ${time}`);
+            setInfo?.(
+              `Distance: ${distanceInMiles.toFixed(
+                1
+              )} mi, Estimated Time: ${time}`
+            );
           } else {
             createMapForRobot("map", origin, destination, routePreference)
               .then(({ distance, duration }) => {
@@ -23,7 +38,9 @@ const SharedMap = ({ sender, receiver, transportMode, routePreference, setInfo }
               })
               .catch((error) => {
                 console.error(error);
-                setInfo?.("Failed to calculate route. Please check the addresses.");
+                setInfo?.(
+                  "Failed to calculate route. Please check the addresses."
+                );
               });
           }
         })
@@ -32,7 +49,7 @@ const SharedMap = ({ sender, receiver, transportMode, routePreference, setInfo }
           setInfo?.("Failed to geocode addresses.");
         });
     }
-  }, [sender, receiver, transportMode, routePreference]);
+  }, [sender, receiver, transportMode, routePreference, setInfo]);
 
   return (
     <div
@@ -42,7 +59,7 @@ const SharedMap = ({ sender, receiver, transportMode, routePreference, setInfo }
         height: "500px",
         border: "1px solid #ccc",
         borderRadius: "8px",
-        marginLeft: "10px"
+        marginLeft: "10px",
       }}
     ></div>
   );
