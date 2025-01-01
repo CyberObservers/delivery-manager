@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, message, Steps, Form } from "antd";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../api";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import "../../styles/Order.css";
@@ -9,8 +9,6 @@ import "../../styles/Order.css";
 import ChooseRoute from "./ChooseRoute";
 import AddPackage from "./AddPackage";
 import ConfirmOrder from "./ConfirmOrder";
-
-import { BASE_URL } from "../../constants";
 
 const steps = [
   {
@@ -85,10 +83,9 @@ const MakeOrder = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${BASE_URL}/address/1`); // mock data
+      const response = await api.get("/address");
       const data = response.data;
       setContact(data);
-      console.log(data);
     };
 
     fetchData();
@@ -148,8 +145,6 @@ const MakeOrder = () => {
               message.success("Processing complete!");
 
               setTimeout(() => navigate("/delivery/manage"), 3000);
-
-              
             }}
           >
             Done

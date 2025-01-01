@@ -54,7 +54,8 @@ const ChosenContact = (props) => {
       </Typography>
       <Typography variant="body1">
         <HomeIcon sx={iconStyle} /> <strong>Address:</strong>{" "}
-        {person.address.replace(/\n/g, ", ")}
+        {person.address_line_1},{" "}
+        {person.address_line_2 ? person.address_line_2 : ""}
       </Typography>
       <Typography variant="body1">
         <PhoneIcon sx={iconStyle} /> <strong>Phone:</strong> {person.phone}
@@ -122,16 +123,24 @@ const ConfirmOrder = (props) => {
           />
         </Col>
         <Col span={12}>
-  <div style={{ flex: 0.6, height: "400px" }}>
-    <SharedMap
-      sender={sender}
-      receiver={receiver}
-      transportMode={transportMode}
-      routePreference={routePreference}
-    />
-    <div style={{ marginLeft: "10px", marginTop: "10px", fontSize: "16px" }}>{info}</div>
-  </div>
-</Col>
+          <div style={{ flex: 0.6, height: "400px" }}>
+            <SharedMap
+              sender={sender}
+              receiver={receiver}
+              transportMode={transportMode}
+              routePreference={routePreference}
+            />
+            <div
+              style={{
+                marginLeft: "10px",
+                marginTop: "10px",
+                fontSize: "16px",
+              }}
+            >
+              {info}
+            </div>
+          </div>
+        </Col>
       </Row>
     </div>
   );

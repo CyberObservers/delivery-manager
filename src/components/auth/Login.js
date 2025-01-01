@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { HttpStatusCode } from "axios";
 import { Form, Input, Button, Card, Select } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Login.css";
+import { authApi } from "../../api";
 
 const { Option } = Select;
 
@@ -10,14 +12,31 @@ const Login = (props) => {
   const { handleLoggedIn } = props;
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const onFinish = (values) => {
-    console.log("Received values:", values);
-    handleLoggedIn("test-token");
-    if (values.userType === "admin") {
-      navigate("/dashboard");
-    } else {
-      navigate("/home");
+  const handleLogin = async (values) => {
+    setLoading(true);
+    try {
+      const response = await authApi.post("/login", {
+        email: values.username,
+        password: values.password,
+        role_name: values.userType,
+      });
+
+      if (response.status === HttpStatusCode.Ok) {
+        // get response json
+        const data = response.data;
+        handleLoggedIn(data.token);
+        if (values.userType === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/home");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,7 +61,12 @@ const Login = (props) => {
             </span>
           </div>
 
-          <Form form={form} name="login" onFinish={onFinish} layout="vertical">
+          <Form
+            form={form}
+            name="login"
+            onFinish={handleLogin}
+            layout="vertical"
+          >
             <Form.Item
               name="username"
               rules={[
@@ -100,6 +124,7 @@ const Login = (props) => {
                 size="large"
                 block
                 className="login-button"
+                loading={loading}
               >
                 Sign In
               </Button>

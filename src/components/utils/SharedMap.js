@@ -16,10 +16,21 @@ const SharedMap = ({
   useEffect(() => {
     if (sender && receiver) {
       const geocoder = new window.google.maps.Geocoder();
+      const origin = `${sender.address_line_1}${
+        sender.address_line_2 !== undefined ? " " + sender.address_line_2 : ""
+      }`;
+      const destination = `${receiver.address_line_1}${
+        receiver.address_line_2 !== undefined
+          ? " " + receiver.address_line_2
+          : ""
+      }`;
+
+      console.log("origin:", origin);
+      console.log("destination:", destination);
 
       Promise.all([
-        geocodeAddress(geocoder, sender.address),
-        geocodeAddress(geocoder, receiver.address),
+        geocodeAddress(geocoder, origin),
+        geocodeAddress(geocoder, destination),
       ])
         .then(([origin, destination]) => {
           if (transportMode === "UAV") {
