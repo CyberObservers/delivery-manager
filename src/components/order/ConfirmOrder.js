@@ -65,13 +65,28 @@ const ChosenContact = (props) => {
 };
 
 const ConfirmOrder = (props) => {
-  const { form, packages, transportMode, routePreference, info, contact } =
-    props;
+  const {
+    form,
+    packages,
+    transportMode,
+    routePreference,
+    info,
+    setInfo,
+    contact,
+    setDistance,
+  } = props;
   const senderId = form.getFieldValue("sender");
   const receiverId = form.getFieldValue("receiver");
 
   const sender = contact.find((c) => c.address_id === senderId);
   const receiver = contact.find((c) => c.address_id === receiverId);
+
+  const typoStyle = {
+    color: "black",
+    fontSize: { xs: "12px", md: "15px", lg: "18px" },
+    fontWeight: "bold",
+    fontFamily: "Roboto monospace",
+  };
   return (
     <div style={{ margin: "20px" }}>
       <h1>Confirm Order</h1>
@@ -93,14 +108,24 @@ const ConfirmOrder = (props) => {
 
       <Row>
         <Col span={12}>
-          <Row>
-            <Col span={12}>
-              <h3>Transportation Mode</h3>
+          <Row style={{ alignItems: "end" }}>
+            <Col span={8}>
+              <Typography variant="body1" sx={typoStyle}>
+                Transportation Mode
+              </Typography>
               <p>{transportMode}</p>
             </Col>
+            <Col span={8}>
+              <Typography variant="body1" sx={typoStyle}>
+                Is Fragile?
+              </Typography>
+              <p>{String(form.getFieldValue("fragile"))}</p>
+            </Col>
             {transportMode === "Robot" && (
-              <Col span={12}>
-                <h3>Route Preference</h3>
+              <Col span={8}>
+                <Typography variant="body1" sx={typoStyle}>
+                  Route Preference
+                </Typography>
                 <p>{routePreference}</p>
               </Col>
             )}
@@ -129,6 +154,9 @@ const ConfirmOrder = (props) => {
               receiver={receiver}
               transportMode={transportMode}
               routePreference={routePreference}
+              setDistance={setDistance}
+              info={info}
+              setInfo={setInfo}
             />
             <div
               style={{
@@ -137,7 +165,7 @@ const ConfirmOrder = (props) => {
                 fontSize: "16px",
               }}
             >
-              {info}
+              {Number(info.distance).toFixed(1)} miles, {info.duration} mins
             </div>
           </div>
         </Col>

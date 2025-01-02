@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import {
 //   LoadScript,
 //   GoogleMap,
@@ -17,11 +17,22 @@ const ChooseRoute = (props) => {
     info,
     setInfo,
     contact,
+    setDistance,
   } = props;
 
   // const [directions, setDirections] = useState(null);
   // const [origin, setOrigin] = useState(null);
   // const [destination, setDestination] = useState(null);
+
+  const [routeInfo, setRouteInfo] = useState("");
+
+  useEffect(() => {
+    let distance = Number(info.distance);
+    let duration = Number(info.duration);
+    console.log(info);
+    // setRouteInfo("");
+    setRouteInfo(`${distance.toFixed(1)} miles, ${duration.toFixed(1)} mins`);
+  }, [info]);
 
   return (
     <div style={{ flex: 0.7 }}>
@@ -76,9 +87,11 @@ const ChooseRoute = (props) => {
             )}
             transportMode={transportMode}
             routePreference={routePreference}
+            info={info}
             setInfo={setInfo}
+            setDistance={setDistance}
           />
-          <div style={{ marginTop: "10px", fontSize: "16px" }}>{info}</div>
+          <div style={{ marginTop: "10px", fontSize: "16px" }}>{routeInfo}</div>
         </div>
         {/* <div style={{ flex: 0.7, height: "400px" }}>
           <LoadScript

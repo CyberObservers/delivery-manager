@@ -8,6 +8,7 @@ import Register from "./auth/Register";
 import { withAuth, navAuth } from "./utils/WithAuth";
 import MakeOrder from "./order/MakeOrder";
 import ManageOrder from "./order/ManageOrder";
+import Retrieve from "./auth/RetrievePassword";
 
 const routesConfig = [
   {
@@ -43,6 +44,12 @@ const routesConfig = [
   {
     path: "/register",
     component: navAuth(Register, "/home"),
+    showOnBar: false,
+    needsBackground: true,
+  },
+  {
+    path: "/retrieve",
+    component: navAuth(Retrieve, "/home"),
     showOnBar: false,
     needsBackground: true,
   },

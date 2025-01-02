@@ -11,7 +11,9 @@ const SharedMap = ({
   receiver,
   transportMode,
   routePreference,
+  info,
   setInfo,
+  setDistance,
 }) => {
   useEffect(() => {
     if (sender && receiver) {
@@ -25,9 +27,6 @@ const SharedMap = ({
           : ""
       }`;
 
-      console.log("origin:", origin);
-      console.log("destination:", destination);
-
       Promise.all([
         geocodeAddress(geocoder, origin),
         geocodeAddress(geocoder, destination),
@@ -35,23 +34,33 @@ const SharedMap = ({
         .then(([origin, destination]) => {
           if (transportMode === "UAV") {
             createMapForUAV("map", origin, destination);
-            const distanceInMiles = calculateUAVDistance(origin, destination);
+            const distanceInMeters = calculateUAVDistance(origin, destination);
+            setDistance?.(distanceInMeters);
+            const distanceInMiles = (distanceInMeters / 1000) * 0.621371;
             const time = `${Math.round((distanceInMiles / 31.07) * 60)} mins`; // UAV speed = 31.07 mph
-            setInfo?.(
-              `Distance: ${distanceInMiles.toFixed(
-                1
-              )} mi, Estimated Time: ${time}`
-            );
+            setInfo?.({
+              ...info,
+              distance: Number(distanceInMiles),
+              duration: Math.round((distanceInMiles / 60) * 60),
+            });
           } else {
             createMapForRobot("map", origin, destination, routePreference)
               .then(({ distance, duration }) => {
-                setInfo?.(`Distance: ${distance}, Duration: ${duration}`);
+                setDistance?.(distance.value);
+                // `Distance: ${distance.text}, Duration: ${duration}`
+                setInfo?.({
+                  distance: (distance.value / 1000) * 0.621371, // meter
+                  duration: duration.value / 60, // seconds
+                });
               })
               .catch((error) => {
                 console.error(error);
-                setInfo?.(
-                  "Failed to calculate route. Please check the addresses."
-                );
+                setInfo?.({
+                  ...info,
+                  distance: -1,
+                  duration: -1,
+                  message: "Failed to calculate route.",
+                });
               });
           }
         })
@@ -60,7 +69,7 @@ const SharedMap = ({
           setInfo?.("Failed to geocode addresses.");
         });
     }
-  }, [sender, receiver, transportMode, routePreference, setInfo]);
+  }, [sender, receiver, transportMode, routePreference, setInfo, setDistance]);
 
   return (
     <div

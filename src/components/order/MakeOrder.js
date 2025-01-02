@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { HttpStatusCode } from "axios";
 import { Button, message, Steps, Form } from "antd";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
@@ -9,6 +10,9 @@ import "../../styles/Order.css";
 import ChooseRoute from "./ChooseRoute";
 import AddPackage from "./AddPackage";
 import ConfirmOrder from "./ConfirmOrder";
+import calcPrice from "../utils/calcPrice";
+
+import { orderApi } from "../../api";
 
 const steps = [
   {
@@ -35,17 +39,19 @@ const MakeOrder = () => {
   const [packages, setPackages] = useState([
     {
       key: "1",
-      weight: "1kg",
-      width: "10cm",
-      length: "10cm",
-      height: "10cm",
+      weight: 1,
+      width: 1,
+      length: 1,
+      height: 1,
     },
   ]);
 
   const [transportMode, setTransportMode] = useState("Robot");
   const [routePreference, setRoutePreference] = useState("Fastest");
-  const [info, setInfo] = useState("");
+  const [info, setInfo] = useState({});
   const [contact, setContact] = useState([]);
+  const [distance, setDistance] = useState(0);
+  const [loading, setLoading] = useState(false);
   let Component = steps[current].component;
 
   const next = () => {
@@ -74,6 +80,58 @@ const MakeOrder = () => {
     }
   };
   const prev = () => setCurrent(current - 1);
+
+  const onConfirm = async () => {
+    setLoading(true);
+    form.validateFields();
+    // calc total weights
+    let totalWeight = 0;
+    packages.forEach((p) => {
+      totalWeight += parseFloat(p.weight);
+    });
+    let totalPrice = calcPrice(
+      distance,
+      totalWeight,
+      transportMode,
+      form.getFieldValue("fragile")
+    );
+    totalPrice = totalPrice.toFixed(2);
+
+    try {
+      const response = await orderApi.post("/create", {
+        station_id: 1,
+        source_address_id: form.getFieldValue("sender"),
+        dest_address_id: form.getFieldValue("receiver"),
+        delivery_method: transportMode,
+        // calc max width among all packages
+        package_size: {
+          width: Math.max(...packages.map((p) => p.width)),
+          length: Math.max(...packages.map((p) => p.length)),
+          height: Math.max(...packages.map((p) => p.height)),
+        },
+        package_weight: totalWeight,
+        total_price: totalPrice,
+        category: form.getFieldValue("fragile") ? "Fragile" : "Normal",
+        route: {
+          duration: `${info.duration} mins`,
+          distance: `${(distance / 1000) * 0.621371} miles`,
+        },
+        notes: form.getFieldValue("note"),
+      });
+      if (response.status !== HttpStatusCode.Created) {
+        message.error("Failed to place order.");
+      } else {
+        message.success("Processing complete!");
+        setTimeout(() => navigate("/delivery/manage"), 1000);
+        form.resetFields();
+      }
+    } catch (error) {
+      console.log("Failed:", error);
+      message.error("Failed to place order.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const items = steps.map((item) => ({
     key: item.title,
@@ -124,29 +182,24 @@ const MakeOrder = () => {
             setContact={setContact}
             setPackages={setPackages}
             packages={packages}
+            distance={distance}
+            setDistance={setDistance}
           />
         </div>
       </Stack>
       <div style={{ marginBottom: 24 }}>
         {current > 0 && (
-          <Button style={{ marginRight: 10 }} onClick={prev}>
+          <Button style={{ marginRight: 10 }} onClick={prev} loading={loading}>
             Previous
           </Button>
         )}
         {current < steps.length - 1 && (
-          <Button type="primary" onClick={next}>
+          <Button type="primary" onClick={next} loading={loading}>
             Next
           </Button>
         )}
         {current === steps.length - 1 && (
-          <Button
-            type="primary"
-            onClick={() => {
-              message.success("Processing complete!");
-
-              setTimeout(() => navigate("/delivery/manage"), 3000);
-            }}
-          >
+          <Button type="primary" onClick={onConfirm} loading={loading}>
             Done
           </Button>
         )}

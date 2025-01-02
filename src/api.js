@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL, TOKEN_KEY } from "./constants";
+import { message } from "antd";
 
 /*
  *  auth api
@@ -18,8 +19,8 @@ const authApi = axios.create({
  *  delivery api
  */
 
-const deliveryApi = axios.create({
-  baseURL: `${BASE_URL}/delivery`,
+const orderApi = axios.create({
+  baseURL: `${BASE_URL}/order`,
   withCredentials: true,
   timeout: 3000,
   headers: {
@@ -27,7 +28,7 @@ const deliveryApi = axios.create({
   },
 });
 
-deliveryApi.interceptors.request.use(
+orderApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
@@ -36,6 +37,20 @@ deliveryApi.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+orderApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      message.error("Please login first.");
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
@@ -66,6 +81,20 @@ profileApi.interceptors.request.use(
   }
 );
 
+profileApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      message.error("Please login first.");
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
 /*
  *  history api
  */
@@ -87,6 +116,20 @@ historyApi.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+historyApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      message.error("Please login first.");
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
@@ -114,5 +157,19 @@ api.interceptors.request.use(
   }
 );
 
-export { authApi, deliveryApi, historyApi, profileApi };
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      message.error("Please login first.");
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+export { authApi, orderApi, historyApi, profileApi };
 export default api;

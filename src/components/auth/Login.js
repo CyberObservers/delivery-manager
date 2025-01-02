@@ -75,7 +75,7 @@ const Login = (props) => {
             >
               <Input
                 prefix={<UserOutlined />}
-                placeholder="username: admin or user"
+                placeholder="user email"
                 size="large"
               />
             </Form.Item>
@@ -88,7 +88,7 @@ const Login = (props) => {
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="password: ant design"
+                placeholder="password"
                 size="large"
               />
             </Form.Item>
@@ -104,7 +104,11 @@ const Login = (props) => {
             </Form.Item>
 
             <div className="login-links">
-              <Button type="link" className="forgot-link">
+              <Button
+                type="link"
+                className="forgot-link"
+                onClick={() => navigate("/retrieve")}
+              >
                 forgot password
               </Button>
               <Button

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Radio,
@@ -46,6 +46,7 @@ const AddPackage = (props) => {
   const [newContact] = Form.useForm();
   const [showNewContact, setShowNewContact] = useState(false);
   const [addContactLoading, setAddContactLoading] = useState(false);
+  const [renderedContact, setRenderedContact] = useState([]);
 
   const columns = [
     {
@@ -80,6 +81,15 @@ const AddPackage = (props) => {
     },
   ];
 
+  useEffect(() => {
+    setRenderedContact(
+      contact.map((person) => ({
+        label: <span>{`${person.first_name} ${person.last_name} `}</span>,
+        value: person.address_id,
+      }))
+    );
+  }, [contact]);
+
   const handleAddContact = async () => {
     try {
       setAddContactLoading(true);
@@ -102,6 +112,7 @@ const AddPackage = (props) => {
         newContact.resetFields();
         message.success("Contact added successfully!");
       }
+      window.location.reload();
     } catch (errorInfo) {
       console.log("Failed:", errorInfo);
       message.error("Please fill in all fields.");
@@ -184,12 +195,7 @@ const AddPackage = (props) => {
             <Select
               placeholder="Select a person"
               allowClear
-              options={contact.map((person) => ({
-                label: (
-                  <span>{`${person.first_name} ${person.last_name} `}</span>
-                ),
-                value: person.address_id,
-              }))}
+              options={renderedContact}
             />
           </Form.Item>
           <Form.Item
@@ -200,12 +206,7 @@ const AddPackage = (props) => {
             <Select
               placeholder="Select a person"
               allowClear
-              options={contact.map((person) => ({
-                label: (
-                  <span>{`${person.first_name} ${person.last_name}`}</span>
-                ),
-                value: person.address_id,
-              }))}
+              options={renderedContact}
             />
           </Form.Item>
 
@@ -215,8 +216,8 @@ const AddPackage = (props) => {
             rules={[{ required: true }]}
           >
             <Radio.Group>
-              <Radio value="Yes">Yes</Radio>
-              <Radio value="No">No</Radio>
+              <Radio value={true}>Yes</Radio>
+              <Radio value={false}>No</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item label="Note" name="note">
